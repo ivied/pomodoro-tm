@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -19,11 +18,9 @@
       <entry name="?*.ftl" />
       <entry name="?*.wav" />
     </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="habatica-api_main" target="1.8" />
+      <module name="habatica-api_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
-

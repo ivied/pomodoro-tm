@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/habatica-api.iml" filepath="$PROJECT_DIR$/.idea/modules/habatica-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/habatica-api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/habatica-api_main.iml" group="habatica-api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/habatica-api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/habatica-api_test.iml" group="habatica-api" />
       <module fileurl="file://$PROJECT_DIR$/pomodoro.iml" filepath="$PROJECT_DIR$/pomodoro.iml" />
     </modules>
   </component>

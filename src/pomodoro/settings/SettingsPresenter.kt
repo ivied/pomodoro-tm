@@ -149,8 +149,8 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         private const val MIN_TIME_INTERVAL = 1
         private const val MAX_TIME_INTERVAL = 240
 
-        private fun selectedItemAsInteger(comboBox: JComboBox): Int {
-            val s = (comboBox.selectedItem as String).trim { it <= ' ' }
+        private fun selectedItemAsInteger(comboBox: JComboBox<*>?): Int {
+            val s = (comboBox?.selectedItem as String).trim { it <= ' ' }
             val value = s.toInt()
             return if (value < MIN_TIME_INTERVAL) MIN_TIME_INTERVAL
             else if (value > MAX_TIME_INTERVAL) MAX_TIME_INTERVAL
