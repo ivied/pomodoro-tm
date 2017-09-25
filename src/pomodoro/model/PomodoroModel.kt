@@ -3,19 +3,23 @@ package pomodoro.model
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
+import ru.ivied.HabiticaApiServiceImpl
 import java.util.*
 
 class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
     private val listeners = HashMap<Any, Listener>()
     private var settings = originalSettings.copy()
     private var updatedSettings = settings
+    private var habitica = HabiticaApiServiceImpl(updatedSettings.apiUser, updatedSettings.apiKey)
 
     init {
         originalSettings.addChangeListener(object : Settings.ChangeListener {
             override fun onChange(newSettings: Settings) {
                 updatedSettings = newSettings
+                habitica = HabiticaApiServiceImpl(updatedSettings.apiUser, updatedSettings.apiKey)
             }
         })
+
         state.progress = progressMax
         state.pomodorosTillLongBreak = settings.longBreakFrequency
     }
@@ -40,6 +44,10 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         var wasManuallyStopped = false
         when (mode) {
             Run -> {
+                if(settings.isHabiticaIntegration) {
+                    habitica.makePomodoro()
+                }
+
                 mode = Stop
                 progress = progressMax
                 wasManuallyStopped = true
@@ -74,6 +82,11 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                 }
             }
             Break -> {
+
+                if(settings.isHabiticaIntegration) {
+                    habitica.takePomodoro()
+                }
+
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     mode = Stop

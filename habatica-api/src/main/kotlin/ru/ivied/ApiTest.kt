@@ -1,5 +1,6 @@
 package ru.ivied
 
 fun main(args: Array<String>) {
-    HabiticaApiServiceImpl().getStatus()
+  //  HabiticaApiServiceImpl(updatedSettings.apiUser, updatedSettings.apiKey).makePomodoro()
+   // HabiticaApiServiceImpl(updatedSettings.apiUser, updatedSettings.apiKey).takePomodoro()
 }

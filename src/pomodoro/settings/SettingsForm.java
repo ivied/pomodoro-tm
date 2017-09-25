@@ -20,6 +20,9 @@ class SettingsForm {
 	public JCheckBox showTimeInToolbarWidgetCheckbox;
 	public ComboBox longBreakLengthComboBox;
 	public ComboBox longBreakFrequencyComboBox;
+	public JTextField userID;
+	public JTextField APIToken;
+	public JCheckBox habiticaIntegrationCheckBox;
 
 	public JPanel getRootPanel() {
 		return rootPanel;
@@ -47,15 +50,13 @@ class SettingsForm {
 		final Spacer spacer2 = new Spacer();
 		rootPanel.add(spacer2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 		final JPanel panel1 = new JPanel();
-		panel1.setLayout(new GridLayoutManager(9, 5, new Insets(0, 0, 0, 0), -1, -1));
+		panel1.setLayout(new GridLayoutManager(11, 5, new Insets(0, 0, 0, 0), -1, -1));
 		rootPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		final JLabel label1 = new JLabel();
 		label1.setText("Pomodoro length:");
 		label1.setDisplayedMnemonic('P');
 		label1.setDisplayedMnemonicIndex(0);
 		panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final Spacer spacer3 = new Spacer();
-		panel1.add(spacer3, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 		pomodoroLengthComboBox = new ComboBox();
 		pomodoroLengthComboBox.setEditable(true);
 		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
@@ -155,6 +156,23 @@ class SettingsForm {
 		final JLabel label12 = new JLabel();
 		label12.setText("pomodoros");
 		panel1.add(label12, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label13 = new JLabel();
+		label13.setText("User ID");
+		panel1.add(label13, new GridConstraints(9, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label14 = new JLabel();
+		label14.setText("API Token");
+		panel1.add(label14, new GridConstraints(10, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		userID = new JTextField();
+		panel1.add(userID, new GridConstraints(9, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+		APIToken = new JTextField();
+		panel1.add(APIToken, new GridConstraints(10, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+		final JLabel label15 = new JLabel();
+		label15.setText("Habitica integration");
+		panel1.add(label15, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		habiticaIntegrationCheckBox = new JCheckBox();
+		habiticaIntegrationCheckBox.setSelected(false);
+		habiticaIntegrationCheckBox.setText("");
+		panel1.add(habiticaIntegrationCheckBox, new GridConstraints(8, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		label1.setLabelFor(pomodoroLengthComboBox);
 		label3.setLabelFor(breakLengthComboBox);
 		label10.setLabelFor(breakLengthComboBox);

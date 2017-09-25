@@ -1,15 +1,17 @@
 package ru.ivied
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.http.GET
-import org.junit.runner.Request.method
-import com.intellij.openapi.vcs.changes.committed.IncomingChangeState.header
-import sun.util.logging.resources.logging
 import okhttp3.OkHttpClient
+import retrofit2.http.*
 import ru.ivied.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.POST
+
+
+
+
 
 
 interface HabiticaApiService {
@@ -17,14 +19,33 @@ interface HabiticaApiService {
     @GET("status")
     fun status(): Single<HabitResponse<Status>>
 
+
+    @GET("tasks/user")
+    fun getTasks(): Single<HabitResponse<ArrayList<Task>>>
+
+
+    @GET("tasks/{id}")
+    fun getTask(@Path("id") id: String): Single<HabitResponse<Task>>
+
+    @POST("tasks/user")
+    fun createTask(@Body item: Task): Single<HabitResponse<Task>>
+
+
+    @PUT("tasks/{id}")
+    fun updateTask(@Path("id") id: String, @Body item: Task): Single<HabitResponse<Task>>
+
+
+    @POST("tasks/{id}/score/{direction}")
+    fun postTaskDirection(@Path("id") id: String, @Path("direction") direction: String): Single<HabitResponse<TaskDirectionData>>
+
     companion object {
-        fun create(): HabiticaApiService {
+        fun create(apiUser: String, apiKey: String): HabiticaApiService {
             val client = OkHttpClient.Builder()
                     .addNetworkInterceptor { chain ->
                         val original = chain.request()
                         val builder = original.newBuilder()
-                                    .header("x-api-key", "fb12a3a5-a417-42cf-abcb-7dbbd34186a6")
-                                    .header("x-api-user", "89b92405-60df-49b9-b576-0ccc6dd10139")
+                                    .header("x-api-key", apiKey)
+                                    .header("x-api-user", apiUser)
 
                         //builder = builder.header("x-client", "habitica-android")
                         //if (userAgent != null) {

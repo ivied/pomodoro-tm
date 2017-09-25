@@ -23,7 +23,11 @@ data class Settings(
         var isPopupEnabled: Boolean = true,
         var isBlockDuringBreak: Boolean = false,
         var isShowToolWindow: Boolean = false,
-        var isShowTimeInToolbarWidget: Boolean = true
+        var isShowTimeInToolbarWidget: Boolean = true,
+        var apiKey: String = "",
+        var apiUser: String = "",
+        var isHabiticaIntegration: Boolean = false
+
 ) : PersistentStateComponent<Settings> {
     /**
      * If IntelliJ shuts down during pomodoro and then restarts, pomodoro can be continued.

@@ -45,6 +45,9 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             ringVolumeSlider.addChangeListener(changeListener)
             showToolWindowCheckbox.addChangeListener(changeListener)
             showTimeInToolbarWidgetCheckbox.addChangeListener(changeListener)
+            habiticaIntegrationCheckBox.addChangeListener(changeListener)
+            APIToken.addActionListener(actionListener)
+            userID.addActionListener(actionListener)
         }
     }
 
@@ -92,6 +95,11 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             uiModel.longBreakFrequency = Settings.defaultLongBreakFrequency
         }
 
+
+        uiModel.apiKey = settingsForm!!.APIToken.text
+        uiModel.apiUser = settingsForm!!.userID.text
+
+
         uiModel.ringVolume = settingsForm!!.ringVolumeSlider.value
         if (lastUIRingVolume != uiModel.ringVolume) {
             lastUIRingVolume = uiModel.ringVolume
@@ -102,6 +110,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         uiModel.isBlockDuringBreak = settingsForm!!.blockDuringBreak.isSelected
         uiModel.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
         uiModel.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
+        uiModel.isHabiticaIntegration = settingsForm!!.habiticaIntegrationCheckBox.isSelected
     }
 
     private fun updateUI() {
@@ -122,6 +131,10 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             blockDuringBreak.isSelected = uiModel.isBlockDuringBreak
             showToolWindowCheckbox.isSelected = uiModel.isShowToolWindow
             showTimeInToolbarWidgetCheckbox.isSelected = uiModel.isShowTimeInToolbarWidget
+            APIToken.text = uiModel.apiKey
+            userID.text = uiModel.apiUser
+            habiticaIntegrationCheckBox.isSelected = uiModel.isHabiticaIntegration
+
         }
 
         updatingUI = false

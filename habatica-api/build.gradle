@@ -19,23 +19,12 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 }
-configurations.all {
-    resolutionStrategy {
-        eachDependency { DependencyResolveDetails details ->
-            if (details.requested.group == 'com.google.code.gson') {
-                details.useVersion "2.7"
-            }
-        }
-    }
-}
-
 
 
 dependencies {
 
     compile "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
-    compile "io.reactivex.rxjava2:rxandroid:2.0.1"
-    compile ('com.google.code.gson:gson:2.7'){force = true}
+    compile 'io.reactivex.rxjava2:rxjava:2.1.4'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'org.apache.commons:commons-lang3:3.4'
