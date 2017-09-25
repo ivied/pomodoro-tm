@@ -44,10 +44,6 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         var wasManuallyStopped = false
         when (mode) {
             Run -> {
-                if(settings.isHabiticaIntegration) {
-                    habitica.makePomodoro()
-                }
-
                 mode = Stop
                 progress = progressMax
                 wasManuallyStopped = true
@@ -63,6 +59,10 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
             Stop -> {
                 mode = Run
                 startTime = time
+
+                if(settings.isHabiticaIntegration) {
+                    habitica.makePomodoro()
+                }
             }
         }
         onTimer(time, wasManuallyStopped)
@@ -79,13 +79,14 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                     progress = progressSince(time)
                     pomodorosAmount++
                     pomodorosTillLongBreak--
+
+                    if(settings.isHabiticaIntegration) {
+                        habitica.takePomodoro()
+                    }
+
                 }
             }
             Break -> {
-
-                if(settings.isHabiticaIntegration) {
-                    habitica.takePomodoro()
-                }
 
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
