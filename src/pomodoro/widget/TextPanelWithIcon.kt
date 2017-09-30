@@ -8,7 +8,7 @@ import java.awt.*
 /**
  * Based on [com.intellij.openapi.wm.impl.status.TextPanel.WithIconAndArrows]
  */
-internal class TextPanelWithIcon : TextPanel() {
+class TextPanelWithIcon : TextPanel() {
     private val gap = 2
 
     var icon: Icon? = null

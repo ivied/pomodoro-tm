@@ -10,11 +10,13 @@ import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent.VK_ESCAPE
 import javax.swing.JDialog
 
-class ModalDialog(window: Window) {
+class ModalDialog(window: Window, text: String) {
     private val jDialog: JDialog
 
     init {
         val model = FormModel()
+
+
 
         jDialog = JDialog(window as? Dialog ?: window as Frame)
 
@@ -31,7 +33,7 @@ class ModalDialog(window: Window) {
         jDialog.apply {
             isModal = true
             isUndecorated = true
-            contentPane = ModalForm(model).rootPanel
+            contentPane = ModalForm(model, text).rootPanel
             addKeyListener(keyAdapter)
             pack()
             setLocationRelativeTo(window)
@@ -41,6 +43,7 @@ class ModalDialog(window: Window) {
     fun show() {
         ApplicationManager.getApplication().invokeLater { jDialog.isVisible = true }
     }
+
 
     fun hide() {
         ApplicationManager.getApplication().invokeLater { jDialog.dispose() }

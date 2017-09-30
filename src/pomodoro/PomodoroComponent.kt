@@ -17,6 +17,7 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.WindowManager
+import pomodoro.bulletwindow.TakePomodoroDialog
 import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
@@ -26,12 +27,15 @@ import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
 import pomodoro.toolkitwindow.ToolWindows
+import pomodoro.widget.BulletModel
+import pomodoro.widget.BulletWidget
 import pomodoro.widget.PomodoroWidget
 
 class PomodoroComponent : ApplicationComponent {
     private lateinit var timeSource: TimeSource
     private lateinit var userNotifier: UserNotifier
     lateinit var model: PomodoroModel private set
+    lateinit var bulletModel: BulletModel private set
 
     override fun initComponent() {
         val settings = Settings.instance
@@ -39,10 +43,12 @@ class PomodoroComponent : ApplicationComponent {
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
         model.onIdeStartup(Time.now())
 
+        bulletModel = BulletModel()
+
         val toolWindows = ToolWindows()
         settings.addChangeListener(toolWindows)
 
-        userNotifier = UserNotifier(settings, model)
+        userNotifier = UserNotifier(settings, model, bulletModel)
 
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
@@ -55,6 +61,12 @@ class PomodoroComponent : ApplicationComponent {
                         settings.addChangeListener(widget)
 
                         Disposer.register(project, Disposable { settings.removeChangeListener(widget) })
+
+                        val bulletWidget = BulletWidget()
+                        it.addWidget(bulletWidget, "before Position", project)
+                        settings.addChangeListener(bulletWidget)
+
+                        Disposer.register(project, Disposable { settings.removeChangeListener(bulletWidget) })
                     }
                 }
             }
@@ -77,7 +89,7 @@ class PomodoroComponent : ApplicationComponent {
     override fun getComponentName() = "Pomodoro"
 
 
-    private class UserNotifier(settings: Settings, private val model: PomodoroModel) {
+    private class UserNotifier(settings: Settings, private val model: PomodoroModel,  private val bullet: BulletModel) {
         private val ringSound = RingSound()
         private var modalDialog: ModalDialog? = null
 
@@ -106,6 +118,15 @@ class PomodoroComponent : ApplicationComponent {
                     }
                 }
             })
+            bullet.addListener(this, object : BulletModel.Listener {
+                override fun onStateChange(state: BulletModel.BulletState) {
+                    when(state){
+                        BulletModel.BulletState.Stop  ->
+                            askUserAboutPomodoro()
+                    }
+                }
+            } )
+
         }
 
         private fun blockIDE() {
@@ -114,8 +135,28 @@ class PomodoroComponent : ApplicationComponent {
                 val project = PlatformDataKeys.PROJECT.getData(dataContext)
                 val window = WindowManager.getInstance().getFrame(project)!!
 
-                modalDialog = ModalDialog(window)
+                modalDialog = ModalDialog(window, UIBundle.message("modalwindow.text"))
                 modalDialog!!.show()
+            }
+        }
+
+        private fun askUserAboutPomodoro() {
+            ApplicationManager.getApplication().invokeLater {
+                val dataContext = DataManager.getInstance().getDataContext(IdeFocusManager.getGlobalInstance().focusOwner)
+                val project = PlatformDataKeys.PROJECT.getData(dataContext)
+                val window = WindowManager.getInstance().getFrame(project)!!
+
+                val takePomodoroDialog = TakePomodoroDialog(window, object : TakePomodoroDialog.UserAnswerListener{
+                    override fun onTakePomodoroClick() {
+                        model.onUserSwitchToNextState(Time.now())
+                    }
+
+                    override fun onTakeOneMoreBulletClick() {
+                        bullet.startBullet()
+                    }
+
+                })
+                takePomodoroDialog.show()
             }
         }
 
@@ -140,3 +181,4 @@ class PomodoroComponent : ApplicationComponent {
 
     private fun Project.statusBar(): StatusBar? = WindowManager.getInstance().getStatusBar(this)
 }
+

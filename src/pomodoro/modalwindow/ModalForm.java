@@ -16,7 +16,7 @@ class ModalForm {
     private JLabel messageLabel;
     private final FormModel model;
 
-    public ModalForm(final FormModel model) {
+    public ModalForm(final FormModel model, String text) {
         this.model = model;
 
         $$$setupUI$$$();
@@ -34,6 +34,7 @@ class ModalForm {
         };
         rootPanel.addMouseListener(mouseAdapter);
         messageLabel.addMouseListener(mouseAdapter);
+        messageLabel.setText(text);
 
         updateUI();
     }
